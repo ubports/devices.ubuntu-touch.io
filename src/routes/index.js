@@ -99,35 +99,35 @@ function notFound(res) {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index');
+  res.render('devices')
 });
 
 router.get('/apps', function(req, res, next) {
-  res.render('apps');
+  res.redirect("https://open-store.io");
 });
 
 router.get('/features', function(req, res, next) {
-  res.render('features')
+  res.redirect("https://ubuntutouch.org/features"); // TODO confirm URL
 })
 
 router.get('/install', function(req, res, next) {
-  res.render('install')
+  res.redirect("https://ubuntutouch.org/install"); // TODO confirm URL
 })
 
 router.get('/convergence', function(req, res, next) {
-  res.render('convergence')
+  res.redirect("https://ubuntutouch.org/features"); // TODO confirm URL
 })
 
 router.get('/design', function(req, res, next) {
-  res.render('design')
+  res.redirect("https://ubuntutouch.org/design"); // TODO confirm URL
 })
 
 router.get('/privacy', function(req, res, next) {
-  res.render('privacy')
+  res.redirect("https://ubuntutouch.org/features"); // TODO confirm URL
 })
 
 router.get('/devices', function(req, res, next) {
-  res.render('devices')
+  res.redirect('/');
 })
 
 router.get('/api/devices', function(req, res, next) {

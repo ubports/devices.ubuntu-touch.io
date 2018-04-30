@@ -20,32 +20,20 @@ head
     nav.navbar.unavbar.navbar-light.bg-white.navbar-expand-lg.justify-content-between.fixed-top
       .container
         a.navbar-brand(href="/")
-          .navbar-brand-button ubuntu
+          .navbar-brand-button devices
             img.navbar-brand-image(src="/img/ubuntu-logo.svg")
-            | touch
+            | ubuntu-touch
+            img.navbar-brand-image(src="/img/ubuntu-logo.svg")
+            | io
         button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbar" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation")
           span.navbar-toggler-icon
         .collapse.navbar-collapse.justify-content-end.bg-white(id="navbar")
             ul.navbar-nav
               li.nav-item
-                a.nav-link(href='/apps') Apps
-              li.nav-item
-                a.nav-link(href='/features') Features
-              li.nav-item
-                a.nav-link(href='/install') Get Ubuntu Touch
-              li.nav-item.dropdown
-                a#navbarDropdownMenuLin.nav-link.dropdown-toggle(href='/devices', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-                  | Devices
-                .dropdown-menu(aria-labelledby='navbarDropdownMenuLin')
-                  a.dropdown-item(href='/device/FP2') Fairphone 2
-                  a.dropdown-item(href='/device/bacon') OnePlus One
-                  a.dropdown-item(href='/device/hammerhead') Nexus 5
-                  a.dropdown-item(href='/device/frieza') Bq m10 FHD
-                  a.dropdown-item(href='/devices') More...
-              li.nav-item
                 a.nav-link(href='https://ubports.com') UBports Foundation
               li.nav-item
-                a.nav-link(href='https://ubports.com/donate') Donate
+                a.nav-link(href='https://ubuntutouch.org') About Ubuntu Touch
+                  icon-external-link
 
     .content
       block content
