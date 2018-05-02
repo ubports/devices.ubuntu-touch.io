@@ -32,7 +32,7 @@ var communityList = new Vue({
       window.location.href = '/device/'+device;
     },
     get: function() {
-      get.communityCevices(this).then(function(response) {
+      get.communityDevices(this).then(function(response) {
         console.log(response.body)
         this.devices = response.body;
       });
