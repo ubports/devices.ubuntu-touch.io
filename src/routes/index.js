@@ -30,7 +30,7 @@ const getDevices = () => {
       url: BASE_URL+"devices",
       json: true,
       headers: {
-        'User-Agent': 'client request: server ubuntu-touch.io'
+        'User-Agent': 'client request: server devices.ubuntu-touch.io'
       }
     }, (err, res, body) => {
       // If we hit an error, try using cache!
@@ -65,7 +65,7 @@ const getDevice = (device) => {
       url: BASE_URL+"devices/"+device,
       json: true,
       headers: {
-        'User-Agent': 'client request: server ubuntu-touch.io'
+        'User-Agent': 'client request: server devicces.ubuntu-touch.io'
       }
     }, (err, res, body) => {
 
