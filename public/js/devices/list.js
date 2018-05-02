@@ -20,7 +20,7 @@ var coreList = new Vue({
 })
 
 var communityList = new Vue({
-  el: '#communetyList',
+  el: '#communityList',
   data: {
     devices: [{}]
   },

@@ -28,7 +28,7 @@
           th Device
           th Comment
           th(style='width: 3%;')
-      tbody(id="communetyList")
+      tbody(id="communityList")
         tr(v-for='device in devices', style='', v-on:click="go(device.device)")
           td {{device.name}}
           td {{device.device}}
