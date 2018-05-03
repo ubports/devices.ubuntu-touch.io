@@ -10,15 +10,20 @@ p.
       .card-header About the #{data.name} with Ubuntu Touch
       .card-body!= data.about 
     .card(style="margin-top: 20px")
-      .card-header Install with UBports installer
+      .card-header Install Ubuntu Touch on the #{data.name}
       .card-body
         .row.align-items-center
           .col.col
-            img.item-center.medium-img.rounded.shadow(src="/img/ubpi.jpg")
+            img.item-center.wide-img.rounded.shadow(src="/img/ubpi.jpg", 
+            style="min-width: 200px")
           .col.col
-            .text-center Installing Ubuntu Touch on your #{data.name} has never been eaiser!
+            .text-center  With the UBports installer, you can get Ubuntu Touch on your #{data.name} without breaking a sweat. You can use any Linux, Windows, or macOS computer to run the installer. Simply plug in your device and follow the on-screen instructions, then sit back and let the computer do all the work for you.
             .text-center(style="margin-top: 15px")
-              a.button.btn.btn-primary.btn-xl(href="", data-toggle="modal" data-target="#installerModal") Install Ubuntu touch
+              a.button.btn.btn-primary.btn-xl(href="", data-toggle="modal" data-target="#installerModal") Install Ubuntu Touch
+        .row.align-items-center
+          .col.col
+            div(style="margin-top: 20px;" class="aspect-ratio")
+              iframe(width="854" height="480" src="//www.youtube.com/embed/zuLFTGkuD68?autoplay=0" frameborder="0" allowfullscreen)
     .card(style="margin-top: 20px")
       .card-header Bugs and Source code
       .card-body
