@@ -62,16 +62,17 @@ p.
   .col.col-md-4
     .text-center
       img.sidebar-img(src=data.image)
+    //- TODO hook stats up
+    //- .card(style="margin-bottom: 20px")
+    //-   .card-header Release and Stats
+    //-   .card-body
+    //-     | Latest stable release: #{data.stable-release-date}
+    //-     br
+    //-     | Latest release candidate: #{data.rc-release-date}
+    //-     br
+    //-     | Latest development release: #{data.devel-release-date}
+    //-     | There are roughly #{data.active-devices} #{data.name}s running Ubuntu Touch at the moment.
     .card
-      .card-header Release and Stats
-      .card-body
-        | Latest stable release: 2017-12-21 
-        br
-        | Latest release candidate: 2018-01-10 
-        br
-        | Latest development release: 2018-01-24
-        //- | This device is nr 2 most used device with 1000 downloads
-    .card(style="margin-top: 20px")
       .card-header Buy a #{data.name}
       .card-body
         | You might be able to find new second-hand devices on #[a(href="https://swappa.com/search?q="+data.name) swappa], #[a(href="https://www.ebay.com/sch/i.html?_from=R40&_trksid=p2380057.m570.l1313.TR12.TRC2.A0.H0.Xnexus+5.TRS0&_nkw="+data.name+"&_sacat=0") ebay], or #[a(href="https://duckduckgo.com/?q="+data.name+"&t=canonical&ia=products") other websites]. Shop at at your own risk!
