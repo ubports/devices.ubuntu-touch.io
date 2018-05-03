@@ -1,0 +1,20 @@
+#installerModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='UBports Installer', aria-hidden='true')
+    .modal-dialog(role='document')
+        .modal-content
+          .modal-header
+            h5.modal-title UBports Installer
+            button.close(type='button', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') &times;
+          .modal-body.text-center
+            p The UBports Installer is available on all major operating systems. Klick the buttons below to start the download, or check out the latest #[a(href="https://github.com/ubports/ubports-installer/releases/latest", target="_blank") GitHub release] for alternative packages and release notes.
+            a.button.btn.btn-primary(type="button", href="https://github.com/ubports/ubports-installer/releases/download/0.1.13-beta/ubports-installer.0.1.13-beta.exe")
+              | Download
+              span.fab.fa-windows.fab-space
+            a.button.btn.btn-primary(type="button", href="https://github.com/ubports/ubports-installer/releases/download/0.1.13-beta/ubports-installer-0.1.13-beta.dmg", style="margin-left: 15px; margin-right: 15px")
+              | Download
+              span.fab.fa-apple.fab-space
+            a.button.btn.btn-primary(type="button", href="https://github.com/ubports/ubports-installer/releases/download/0.1.13-beta/ubports-installer_0.1.13-beta_amd64.deb")
+              | Download
+              span.fab.fa-linux.fab-space
+            p(style="margin-top: 15px") Alternatively, you can install the snap package on any Linux distribution:
+            pre snap install ubports-installer
