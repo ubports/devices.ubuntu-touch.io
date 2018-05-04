@@ -8,7 +8,7 @@ p.
   .col.col-md-8
     .card
       .card-header About the #{data.name} with Ubuntu Touch
-      .card-body!= data.about 
+      .card-body!=data.about
     .card(style="margin-top: 20px")
       .card-header Install Ubuntu Touch on the #{data.name}
       .card-body
@@ -77,6 +77,12 @@ p.
   .col.col-md-4
     .text-center
       img.sidebar-img(src=data.image)
+    #bootloaderLocked(hidden='hidden')
+      .card(style="margin-bottom: 20px")
+        .card-header Meet the #{data.name}
+        .card-body
+          div(style="margin-top: 0px;" class="aspect-ratio")
+            iframe(width="854" height="480" src=data.video frameborder="0" allowfullscreen)
     //- TODO hook stats up
     //- .card(style="margin-bottom: 20px")
     //-   .card-header Release and Stats
@@ -87,7 +93,14 @@ p.
     //-     br
     //-     | Latest development release: #{data.devel-release-date}
     //-     | There are roughly #{data.active-devices} #{data.name}s running Ubuntu Touch at the moment.
-    .card
+    .card(style="margin-bottom: 20px")
       .card-header Buy a #{data.name}
       .card-body
         | You might be able to find new second-hand devices on #[a(href="https://swappa.com/search?q="+data.name) swappa], #[a(href="https://www.ebay.com/sch/i.html?_from=R40&_trksid=p2380057.m570.l1313.TR12.TRC2.A0.H0.Xnexus+5.TRS0&_nkw="+data.name+"&_sacat=0") ebay], or #[a(href="https://duckduckgo.com/?q="+data.name+"&t=canonical&ia=products") other websites]. Shop at at your own risk!
+    .card(style="margin-bottom: 20px")
+      .card-header Make a move!
+      .card-body
+        div(style="margin-top: 0px;" class="aspect-ratio")
+          iframe(width="854" height="480" src="https://www.youtube.com/embed/XppN4Hqm1dQ?autoplay=0" frameborder="0" allowfullscreen)
+        br
+        a.btn.btn-default(href="https://ubports.com/get-involved", target="_blank") Join the Community!
