@@ -65,7 +65,7 @@ const getDevice = (device) => {
       url: BASE_URL+"devices/"+device,
       json: true,
       headers: {
-        'User-Agent': 'client request: server devicces.ubuntu-touch.io'
+        'User-Agent': 'client request: server devices.ubuntu-touch.io'
       }
     }, (err, res, body) => {
 
@@ -107,23 +107,23 @@ router.get('/apps', function(req, res, next) {
 });
 
 router.get('/features', function(req, res, next) {
-  res.redirect("https://ubuntutouch.org/features"); // TODO confirm URL
+  res.redirect("https://ubuntu-touch.io/features"); // TODO confirm URL
 })
 
 router.get('/install', function(req, res, next) {
-  res.redirect("https://ubuntutouch.org/install"); // TODO confirm URL
+  res.redirect("https://ubuntu-touch.io/install"); // TODO confirm URL
 })
 
 router.get('/convergence', function(req, res, next) {
-  res.redirect("https://ubuntutouch.org/features"); // TODO confirm URL
+  res.redirect("https://ubuntu-touch.io/features"); // TODO confirm URL
 })
 
 router.get('/design', function(req, res, next) {
-  res.redirect("https://ubuntutouch.org/design"); // TODO confirm URL
+  res.redirect("https://ubuntu-touch.io/design"); // TODO confirm URL
 })
 
 router.get('/privacy', function(req, res, next) {
-  res.redirect("https://ubuntutouch.org/features"); // TODO confirm URL
+  res.redirect("https://ubuntu-touch.io/features"); // TODO confirm URL
 })
 
 router.get('/devices', function(req, res, next) {
