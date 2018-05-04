@@ -12,7 +12,7 @@ npm install
 npm start
 ```
 
-Then open localhost:2706 in your browser
+Then open localhost:2707 in your browser
 
 ## Production
 

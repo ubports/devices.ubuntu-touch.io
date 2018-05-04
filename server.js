@@ -121,7 +121,7 @@ function run(callback) {
       const http = require('http');
 
       // Get port from environment and store in Express.
-      var port = normalizePort(process.env.PORT || '2706');
+      var port = normalizePort(process.env.PORT || '2707');
       app.set('port', port);
 
       // Create HTTP server.
