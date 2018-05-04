@@ -1,9 +1,9 @@
-# devices.ubuntu-touch.io
+# [devices.ubuntu-touch.io](devices.ubuntu-touch.io)
 
 [![Build Status](https://travis-ci.org/ubports/devices.ubuntu-touch.io.svg?branch=master)](https://travis-ci.org/ubports/devices.ubuntu-touch.io)
 [![Coverage Status](https://coveralls.io/repos/github/ubports/devices.ubuntu-touch.io/badge.svg?branch=master)](https://coveralls.io/github/ubports/devices.ubuntu-touch.io?branch=master)
 
-The new Ubuntu Touch website
+See what devices can run Ubuntu Touch.
 
 ## start debug server
 
@@ -12,7 +12,7 @@ npm install
 npm start
 ```
 
-Then open localhost:2707 in your browser
+Then open localhost:2708 in your browser
 
 ## Production
 
