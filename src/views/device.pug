@@ -16,30 +16,7 @@ block content
           .card-header About the #{data.name} with Ubuntu Touch
           .card-body!=data.about
         .card(style="margin-top: 20px")
-          .card-header Install Ubuntu Touch on the #{data.name}
-          .card-body
-            #bootloaderDefinitelyLocked(hidden='hidden')
-              .row.align-items-center
-                .col.col
-                  p #[b Note]: Unfortunately the #{data.name}'s Bootloader can not be unlocked if the device was sold with Android. That means, that Ubuntu Touch can #[b only] be installed on the #{data.name} Ubuntu Edition, #[b not on the Android version]!
-                  p There is not a lot we can do about that, and luckily most devices do not have that restriction. If you are the proud owner of a #{data.name} Ubuntu Edition, you are not affected by this, and you can simply use the UBports Installer to switch to the UBports version of Ubuntu Touch.
-            #bootloaderLocked(hidden='hidden')
-              .row.align-items-center
-                .col.col
-                  p #[b Note]: Unfortunately the #{data.name}'s Bootloader is locked while the device is running Android. That means that you will have to #[a(href="https://docs.ubports.com/en/latest/userguide/install.html#install-on-legacy-android-devices") install the manufacturer's Ubuntu image] before you can switch to the latest Ubuntu Touch release using the UBports Installer.
-                  p This is just a small annoyance, but it's #[a(href="https://docs.ubports.com/en/latest/userguide/install.html#install-on-legacy-android-devices") not difficult] and luckily most devices do not have that restriction. Also, if you are the proud owner of a #{data.name} Ubuntu Edition, you are not affected by this, and you can simply use the UBports Installer to switch to the UBports version of Ubuntu Touch.
-            .row.align-items-center
-              .col.col
-                img.item-center.wide-img.rounded.shadow(src="/img/ubpi.jpg", 
-                style="min-width: 200px")
-              .col.col
-                .text-center With the UBports Installer, you can get Ubuntu Touch on your #{data.name} without breaking a sweat. You can use any Linux, Windows, or macOS computer to run the installer. Simply plug in your device and follow the on-screen instructions, then sit back and let the computer do all the work for you.
-                .text-center(style="margin-top: 15px")
-                  a.button.btn.btn-primary.btn-xl(href="", data-toggle="modal" data-target="#installerModal") Install Ubuntu Touch
-            .row.align-items-center
-              .col.col
-                div(style="margin-top: 20px;" class="aspect-ratio")
-                  iframe(width="854" height="480" src="//www.youtube.com/embed/zuLFTGkuD68?autoplay=0" frameborder="0" allowfullscreen)
+          include device/install
         .card(style="margin-top: 20px")
           .card-header Bugs and Source code
           .card-body
