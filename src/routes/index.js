@@ -99,7 +99,7 @@ function notFound(res) {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('devices')
+  res.render('index')
 });
 
 router.get('/apps', function(req, res, next) {
