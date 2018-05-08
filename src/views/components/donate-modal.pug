@@ -1,0 +1,11 @@
+#donateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='Donate', aria-hidden='true')
+    .modal-dialog(role='document')
+        .modal-content
+          .modal-header
+            h5.modal-title Support Ubuntu Touch
+            button.close(type='button', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') &times;
+          .modal-body.text-center
+            p If you want to support the development of Ubuntu Touch, would you consider becoming a monthly supporter on #[a(href="https://patreon.com/ubports", target="_blank") Patreon] or  #[a(href="https://liberapay.org/ubports", target="_blank") Liberapay] to help found a staff and supplies, which will help UBports grow and make development faster and more efficient.
+            p One-time donations are also very appreciated, we can currently accept  #[a(href="https://patreon.com/ubports", target="_blank") PayPal] and #[a(href="", data-toggle="modal" data-target="#bitcoinModal") Bitcoin]. This helps us cover short-term expenses and build towards a sustainable funding model for the UBports Foundation.
+            include donation-options

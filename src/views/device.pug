@@ -7,8 +7,6 @@ block content
     .row
       .col.col-md-12
         p.device-header #{data.name} (#{data.device})
-
-    p.
     .row
       .col.col-md-8
         .card
@@ -21,21 +19,17 @@ block content
           .card-body
             .row
               .col.col-lg-3.text-center
-                span.fab.fa-paypal.fa-5x(style="margin-bottom: 13px")
-                br
-                a.btn.btn-default(href="https://www.paypal.me/ubports") PayPal
+                a(href="https://www.paypal.me/ubports", target="_blank", style="color: grey")
+                  span.fab.fa-paypal.fa-5x.a(style="margin-bottom: 13px")
               .col.col-lg-3.text-center
-                span.fab.fa-bitcoin.fa-5x(style="margin-bottom: 13px")
-                br
-                a.btn.btn-default(href="", data-toggle="modal" data-target="#bitcoinModal") Bitcoin
+                a(href="", data-toggle="modal" data-target="#bitcoinModal", style="color: grey")
+                  span.fab.fa-bitcoin.fa-5x(style="margin-bottom: 13px")
               .col.col-lg-3.text-center
-                img(style="margin-bottom: 13px; width: 80px; height: 80px;", src="/img/lp-grey.png")
-                br
-                a.btn.btn-default(href="https://liberapay.com/UBports/") Liberapay
+                a(href="https://liberapay.com/UBports/", target="_blank", style="color: grey")
+                  img(style="margin-bottom: 13px; width: 80px; height: 80px;", src="/img/liberapay.svg")
               .col.col-lg-3.text-center
-                span.fab.fa-patreon.fa-5x(style="margin-bottom: 13px")
-                br
-                a.btn.btn-default(href="https://www.patreon.com/ubports") Patreon
+                a(href="https://www.patreon.com/ubports", target="_blank", style="color: grey")
+                  span.fab.fa-patreon.fa-5x(style="margin-bottom: 13px")
 
       .col.col-md-4
         .text-center
