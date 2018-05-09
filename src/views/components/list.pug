@@ -35,10 +35,11 @@
           th Comment
           th(style='width: 3%;')
       tbody(id="communityList")
-        tr(v-for='device in devices', style='', v-on:click="go(device.device)")
+        tr(v-for='device in devices', style='', v-on:click="")
           td {{device.name}}
           td {{device.device}}
-          td(style='width: 45%; max-width: 0; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;') {{device.comment}}
+          td(style='width: 45%; max-width: 0; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;')
+            i work in progress
           td
             span.fas.fa-chevron-right.pull-right
         tr(style='', v-on:click='window.open("https://docs.halium.org","_self")')
