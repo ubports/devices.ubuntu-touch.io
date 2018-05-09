@@ -16,6 +16,12 @@
           td(style='width: 45%; max-width: 0; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;') {{device.comment}}
           td
             span.fas.fa-chevron-right.pull-right
+        tr(style='', v-on:click='window.open("https://unity8.io","_self")')
+          td Desktop
+            img.text-icon(src="/img/desktop-icon.svg")
+          td(colspan="2", style='width: 45%; max-width: 0; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;') Experimental: Install the Unity8 desktop on Ubuntu 18.04 and 16.04
+          td
+            span.fas.fa-chevron-right.pull-right
 
 .card(style="margin-top: 20px")
     .card-header.orange-background #[b Community Devices] - Community-driven Ubuntu Touch devices
@@ -36,7 +42,8 @@
           td
             span.fas.fa-chevron-right.pull-right
         tr(style='', v-on:click='window.open("https://docs.halium.org","_self")')
-          td Your device?
+          td Your device
+            img.text-icon(src="/img/unknown-icon.svg")
           td(colspan="2", style='width: 45%; max-width: 0; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;') Click here to learn how to create your own Halium port!
           td
             span.fas.fa-chevron-right.pull-right
