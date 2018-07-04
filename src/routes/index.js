@@ -3,13 +3,13 @@ const request = require('request');
 const router = express.Router();
 const MarkdownIt = require('markdown-it');
 const md = new MarkdownIt();
+const FetchRelease = require('../../node_modules/fetchrelease/src/fetchrelease.js');
+const installerRelease = new FetchRelease({user: "ubports", repo: "ubports-installer", cache_time: 3600}); // One hour cache
 
 const time = () => Math.floor(new Date() / 1000)
 const BASE_URL = "https://api.ubports.com/v1/"
 
-var cache = {
-  devices: {expire:0}
-}
+var cache = {}
 
 // Internal
 const getDevices = () => {
@@ -82,10 +82,38 @@ const getDevice = (device) => {
 
       resolve(body);
 
-      // 3 munutes cache!
+      // 3 minutes cache!
       cache[device].expire = time()+180;
       cache[device].data = body;
     });
+  });
+}
+
+const getInstaller = (installerPackage) => {
+  return new Promise((resolve, reject) => {
+    switch (installerPackage) {
+      case "linux":
+      case "snap":
+        resolve("https://snapcraft.io/ubports-installer");
+        return;
+      case "ubuntu":
+      case "debian":
+      case "mint":
+        installerRelease.getAssetUrl("latest", "deb").then((r) => {resolve(r);});
+        return;
+      case "win":
+      case "microsoft":
+      case "windows":
+        return installerRelease.getAssetUrl("latest", "exe").then((r) => {resolve(r);});
+        return;
+      case "apple":
+      case "mac":
+      case "macos":
+        return installerRelease.getAssetUrl("latest", "dmg").then((r) => {resolve(r);});
+        return;
+      default:
+        return installerRelease.getAssetUrl("latest", installerPackage).then((r) => {resolve(r);});
+    }
   });
 }
 
@@ -141,6 +169,21 @@ router.get('/api/device/:device', function(req, res, next) {
 router.get('/device/:device', function(req, res, next) {
   getDevice(req.params.device).then(r => res.render('device', { data: r })).catch(() => notFound(res));
 })
+
+router.get('/installer/:package', function(req, res, next) {
+  // redirect to download url of the requested package
+  // or package list if the requested package does not exist
+  getInstaller(req.params.package).then((r) => {
+    res.redirect(r || "https://github.com/ubports/ubports-installer/releases/latest")
+  }).catch((e) => {
+    console.log(e);
+    res.redirect("https://github.com/ubports/ubports-installer/releases/latest");
+  });
+});
+
+router.get('/installer', function(req, res, next) {
+  res.redirect("https://github.com/ubports/ubports-installer/releases/latest");
+});
 
 router.get('/telegram', function(req, res, next) {
   res.redirect("https://telegram.me/ubports");
