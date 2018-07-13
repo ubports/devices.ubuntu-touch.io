@@ -3,7 +3,7 @@ const request = require('request');
 const router = express.Router();
 const MarkdownIt = require('markdown-it');
 const md = new MarkdownIt();
-const FetchRelease = require('../../node_modules/fetchrelease/src/fetchrelease.js');
+const FetchRelease = require('fetchrelease').FetchRelease;
 const installerRelease = new FetchRelease({user: "ubports", repo: "ubports-installer", cache_time: 3600}); // One hour cache
 
 const time = () => Math.floor(new Date() / 1000)
