@@ -5,9 +5,11 @@ const MarkdownIt = require('markdown-it');
 const md = new MarkdownIt();
 const FetchRelease = require('fetchrelease').FetchRelease;
 const installerRelease = new FetchRelease({user: "ubports", repo: "ubports-installer", cache_time: 3600}); // One hour cache
+const SystemImageClient = require('system-image-node-module').Client;
+const systemImageClient = new SystemImageClient({cache_time: 180})
 
-const time = () => Math.floor(new Date() / 1000)
-const BASE_URL = "https://api.ubports.com/v1/"
+const time = () => Math.floor(new Date() / 1000);
+const BASE_URL = "https://api.ubports.com/v1/";
 
 var cache = {}
 
@@ -127,7 +129,7 @@ function notFound(res) {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index')
+  res.render('index');
 });
 
 router.get('/apps', function(req, res, next) {
@@ -136,39 +138,66 @@ router.get('/apps', function(req, res, next) {
 
 router.get('/features', function(req, res, next) {
   res.redirect("https://ubuntu-touch.io/features"); // TODO confirm URL
-})
+});
 
 router.get('/install', function(req, res, next) {
   res.redirect("https://ubuntu-touch.io/install"); // TODO confirm URL
-})
+});
 
 router.get('/convergence', function(req, res, next) {
   res.redirect("https://ubuntu-touch.io/features"); // TODO confirm URL
-})
+});
 
 router.get('/design', function(req, res, next) {
   res.redirect("https://ubuntu-touch.io/design"); // TODO confirm URL
-})
+});
 
 router.get('/privacy', function(req, res, next) {
   res.redirect("https://ubuntu-touch.io/features"); // TODO confirm URL
-})
+});
 
 router.get('/devices', function(req, res, next) {
   res.redirect('/');
-})
+});
 
 router.get('/api/devices', function(req, res, next) {
   getDevices().then(r => res.send(r));
-})
+});
 
 router.get('/api/device/:device', function(req, res, next) {
   getDevice(req.params.device).then(r => res.send(r)).catch(() => res.send(404));
-})
+});
 
 router.get('/device/:device', function(req, res, next) {
-  getDevice(req.params.device).then(r => res.render('device', { data: r })).catch(() => notFound(res));
-})
+  Promise.all([
+    getDevice(req.params.device),
+    systemImageClient.getDeviceChannels(req.params.device).then(channels => {
+      var releases = [];
+      channels.forEach((rawChannel) => {
+        releases.push(
+          systemImageClient.getReleaseDate(req.params.device, rawChannel).then(releaseDate => {
+            return {
+              "channel": rawChannel.replace("ubports-touch/", ""),
+              "date": releaseDate.substring(4, 10) + " " + releaseDate.substring(24, 28)
+            };
+          })
+        );
+      });
+      return releases;
+    })
+  ]).then((r) => {
+    // HACK: Wait for release date resuts, since we can't use await.
+    Promise.all(r[1]).then(releaseDates => {
+      res.render('device', {
+        data: r[0],
+        releases: releaseDates
+      });
+    });
+  }).catch((e) => {
+    console.log(e);
+    notFound(res)
+  });
+});
 
 router.get('/installer/:package', function(req, res, next) {
   // redirect to download url of the requested package

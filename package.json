@@ -8,6 +8,7 @@
     "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/*"
   },
   "dependencies": {
+    "system-image-node-module": "^1.0.7",
     "fetchrelease": "^0.0.3",
     "body-parser": "~1.18.2",
     "cluster": "^0.7.7",

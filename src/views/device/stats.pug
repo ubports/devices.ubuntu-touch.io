@@ -1,9 +1,14 @@
-.card-header.orange-background Release and Stats
+.card-header.orange-background Releases
 .card-body
-  | Latest stable release: #{data.stable-release-date}
-  br
-  | Latest release candidate: #{data.rc-release-date}
-  br
-  | Latest dev release: #{data.devel-release-date}
-  br
-  | There are roughly #{data.active-devices} #{data.name}s running Ubuntu Touch at the moment.
+  table.table(style="margin-bottom: -10px; margin-top: -20px")
+    thead
+      tr
+        th Channel
+        th Release Date
+    tbody
+    each release in releases
+      tr
+        td #{release.channel}
+        td #{release.date}
+  //- br
+  //- | There are roughly #{data.active-devices} #{data.name}s running Ubuntu Touch at the moment.
