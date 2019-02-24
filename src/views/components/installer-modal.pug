@@ -19,3 +19,6 @@
               span.fab.fa-linux.fab-space
             p(style="margin-top: 15px") Alternatively, you can install the snap package on any Linux distribution:
             pre snap install ubports-installer
+            if data.install.installable
+              .text-center(style="margin-top: 15px")
+                a.button.btn.btn-primary.btn-xl.orange-background(href="", data-toggle="modal" data-target="#manualInstallationModal") Manual Installation

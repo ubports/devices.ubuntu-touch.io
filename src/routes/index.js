@@ -6,7 +6,7 @@ const md = new MarkdownIt();
 const FetchRelease = require('fetchrelease').FetchRelease;
 const installerRelease = new FetchRelease({user: "ubports", repo: "ubports-installer", cache_time: 3600}); // One hour cache
 const SystemImageClient = require('system-image-node-module').Client;
-const systemImageClient = new SystemImageClient({cache_time: 180})
+const systemImageClient = new SystemImageClient({cache_time: 180, path: "./"})
 
 const time = () => Math.floor(new Date() / 1000);
 const BASE_URL = "https://api.ubports.com/v1/";
@@ -184,13 +184,25 @@ router.get('/device/:device', function(req, res, next) {
         );
       });
       return releases;
+    }),
+    systemImageClient.getLatestVersion(req.params.device, "ubports-touch/16.04/stable").then((latest) => {
+      var urls = systemImageClient.getFilesUrlsArray(latest)
+      urls.push.apply(urls, systemImageClient.getGgpUrlsArray());
+      var files = systemImageClient.getFilePushArray(urls);
+      var commands = systemImageClient.createInstallCommands(latest.files);
+      return {
+        urls: urls,
+        files: files,
+        commands: commands
+      }
     })
   ]).then((r) => {
     // HACK: Wait for release date resuts, since we can't use await.
     Promise.all(r[1]).then(releaseDates => {
       res.render('device', {
         data: r[0],
-        releases: releaseDates
+        releases: releaseDates,
+        install: r[2]
       });
     });
   }).catch((e) => {

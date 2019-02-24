@@ -1,0 +1,36 @@
+#manualInstallationModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='UBports Installer', aria-hidden='true')
+    .modal-dialog(role='document')
+        .modal-content
+          .modal-header
+            h5.modal-title Manually install Ubuntu Touch
+            button.close(type='button', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') &times;
+          .modal-body.text-center
+            h5 Manual installation
+            p Please make sure you read the full instructions before proceeding. Making mistakes can damage or temporarily disable your device. The installation will delete all data stored on your device. Please back up everything you might need in the future before installing. If you need help with the installation, you can ask members of the community.
+            p First, you need to reboot your device to bootloader mode. #{data.install.buttons.bootloader.instruction} Now, connect your phone to your computer and run the following commands to wipe the internal memory.
+            pre fastboot oem unlock
+            pre fastboot format cache
+            pre fastboot reboot-bootloader
+            p The following commands will download the required custom images for the Ubuntu Touch installation process and check their integrity.
+            each image in data.install.images
+              pre wget #{image.url} -O #{image.type}.img && echo "#{image.checksum} #{image.type}.img" | sha256sum -c
+            p If all images downoaded successfully and the checks read "OK", run the following commands to flash the images to the respective partitions.
+            each image in data.install.images
+              pre fastboot flash #{image.type} #{image.type}.img
+            p Now reboot the device to recovery. #{data.install.buttons.recovery.instruction}
+            p Run the following commands to download the rest of the operating system:
+            pre mkdir pool gpg
+            each url in install.urls
+              pre wget #{url.url} -O #{url.path + "/" + url.url.split(/[\/]/).pop()} #{url.checksum ? "&& echo \"" + url.checksum + " " + url.path + "/" + url.url.split(/[\/]/).pop() + "\" | sha256sum -c" : "&& echo OK"}
+            p If all files downloaded successfully and all checks read "OK", create a new text file called "commandfile" with the following content:
+            pre #{install.commands}
+            p We will now send all the installation files to the device.
+            pre adb shell "mount -a"
+            pre adb shell "mkdir -p /cache/recovery"
+            each file in install.files
+              pre adb push #{file.src} #{file.dest}
+            pre adb push commandfile /cache/recovery/ubuntu_command
+            p Moment of truth! Run this to start the installation process:
+            pre adb reboot recovery
+            p Your device will now reboot and install the operating system. Enjoy exploring Ubuntu Touch!

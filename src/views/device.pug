@@ -3,6 +3,8 @@ extends components/layout
 block content
   include components/bitcoin-modal
   include components/installer-modal
+  if data.install.installable
+    include components/manual-installation-modal
   .container
     .row
       .col.col-md-12
