@@ -6,7 +6,6 @@
             button.close(type='button', data-dismiss='modal', aria-label='Close')
               span(aria-hidden='true') &times;
           .modal-body
-            h5.text-center Manual installation
             p Please make sure you read the full instructions before proceeding. Making mistakes can damage your device, but if you follow the instructions carefully, you will be fine. The installation will delete all data stored on your device. Please back up everything you might need in the future before installing. If you need help with the installation, you can ask members of the community.
             h5.text-center What kind of a PC do you use?
             p You will need a PC running Linux, Windows or macOS to install Ubuntu Touch on your phone. Please select your operating system to continue.
@@ -20,7 +19,7 @@
               a.button.btn.btn-primary(href="#", onclick="hostOsSelected.hidden=false; windowsInstructions.hidden=true; macInstructions.hidden=true; linuxInstructions.hidden=false")
                 | Linux
                 span.fab.fa-linux.fab-space
-            #hostOsSelected(hidden='true', , style="margin-top: 15px")
+            #hostOsSelected(hidden='true', style="margin-top: 15px")
               #linuxInstructions(hidden='true')
                 h5.text-center You are running Linux.
                 p You will need to install fastboot and adb to follow these instructions. On Ubuntu, this can be done by opening a terminal window and running the following command:
@@ -40,42 +39,76 @@
                 pre
                   | mkdir /tmp/ubuntutouchinstall
                   | cd /tmp/ubuntutouchinstall
-              h5.text-center Unlock the bootloader
-              p First, you need to reboot your device to bootloader mode. #{data.install.buttons.bootloader.instruction} Now, connect your phone to your computer and run the following commands to wipe the internal memory.
-              pre
-                | fastboot oem unlock
-                | fastboot format cache
-                | fastboot reboot-bootloader
-              p The following commands will download the required custom images for the Ubuntu Touch installation process and check their integrity.
+              h5.text-center Download Ubuntu Touch
+              p Run these commands to download all the Ubuntu Touch installation files and check their integrity.
               pre
                 each image in data.install.images
                   | wget #{image.url} -O #{image.type}.img && echo "#{image.checksum} #{image.type}.img" | sha256sum -c
                   br
-              p If all images downoaded successfully and the checks read "OK", run the following commands to flash the images to the respective partitions.
-              pre
-                each image in data.install.images
-                  | fastboot flash #{image.type} #{image.type}.img
-                  br
-              p Now reboot the device to recovery. #{data.install.buttons.recovery.instruction}
-              p Run the following commands to download the rest of the operating system:
-              pre
                 | mkdir pool gpg
                 br
                 each url in install.urls
                   | wget #{url.url} -O #{url.path + "/" + url.url.split(/[\/]/).pop()} #{url.checksum ? "&& echo \"" + url.checksum + " " + url.path + "/" + url.url.split(/[\/]/).pop() + "\" | sha256sum -c" : "&& echo OK"}
                   br
-              p If all files downloaded successfully and all checks read "OK", create a new text file called "commandfile" with the following content:
-              pre #{install.commands}
-              p We will now send all the installation files to the device.
-              pre
-                | adb shell "mount -a"
-                br
-                | adb shell "mkdir -p /cache/recovery"
-                br
-                each file in install.files
-                  | adb push #{file.src} #{file.dest}
+              p If all files downoaded successfully and the checks read "OK", you can continue with the installation.
+              h5.text-center Enable developer mode
+              p Your device needs to be in developer mode to continue with the installation. What operating system ins the device running right now?
+              .text-center
+                a.button.btn.btn-primary(href="#", style="margin-right: 15px", onclick="deviceOsSelected.hidden=false; unlockingAndroid.hidden=false; unlockingUbuntuTouch.hidden=true;")
+                  | Android
+                  span.fab.fa-android.fab-space
+                a.button.btn.btn-primary(href="#", onclick="deviceOsSelected.hidden=false; unlockingAndroid.hidden=true; unlockingUbuntuTouch.hidden=false;")
+                  | Ubuntu
+                  span.fab.fa-linux.fab-space
+              #unlockingAndroid.ol(hidden='true', style="margin-top: 15px")
+                li Go to the settings menu, scroll down and select "About phone".
+                li Scroll down to the bottom again, where you see "Build number."
+                li Tap it seven (7) times. After the third tap, you'll see a dialog that says you're four taps away from being a developer. Keep on tapping until you see a dialog saying "You're now a developer"
+                li Now go back to the Settings menu and find "developer settings" (sometimes called "developer options"), Tap that.
+                li Enable the "OEM unlock" and "USB debugging" options.
+              #unlockingUbuntuTouch.ol(hidden='true', style="margin-top: 15px")
+                li Open System Settings, go to About this Phone, and then Developer Mode.
+                li The adb service will be enabled if 'developer mode' is selected. Note that you must have some sort of lock screen security enabled (pin or password), and 'Developer mode' will be greyed out if that's not the case.
+                li The 'Lock Security' menu there can be used to set a pin or password.
+              #deviceOsSelected(hidden='true', style="margin-top: 15px")
+                p Connect your device to your computer and run the following command to see if the adb connection works:
+                pre adb devices
+                p You should see something like this:
+                pre
+                  | List of devices attached
+                  | 0123456789ABCDEF	device
+                p If your device does not show up, disconnect your device and plug it back in again, or run the following command and try again:
+                pre adb kill-server
+                h5.text-center Unlock the bootloader
+                p First, you need to reboot your device to bootloader mode. #{data.install.buttons.bootloader.instruction} Now, connect your phone to your computer and run the following commands to wipe the internal memory.
+                pre
+                  | sudo fastboot oem unlock
+                  | sudo fastboot format cache
+                  | sudo fastboot reboot-bootloader
+                p If you want to erase the data on the device, run these commands:
+                pre
+                  | sudo fastboot format userdata
+                  | sudo fastboot format system
+                h5.text-center Installation
+                pre
+                  each image in data.install.images
+                    | sudo fastboot flash #{image.type} #{image.type}.img
+                    br
+                p Now reboot the device to recovery mode. #{data.install.buttons.recovery.instruction} Create a new text file called "commandfile" with the following content:
+                pre #{install.commands}
+                p We will now send all the installation files to the device.
+                pre
+                  | adb shell "mount -a" # You might see some errors from this command, that's ok.
                   br
-                | adb push commandfile /cache/recovery/ubuntu_command
-              p Moment of truth! Run this to start the installation process:
-              pre adb reboot recovery
-              p Your device will now reboot and install the operating system. Enjoy exploring Ubuntu Touch!
+                  | adb shell "mkdir -p /cache/recovery"
+                  br
+                  each file in install.files
+                    | adb push #{file.src} #{file.dest}
+                    br
+                  | adb push commandfile /cache/recovery/ubuntu_command
+                h5.text-center Moment of truth!
+                p Run this to start the installation process:
+                pre adb reboot recovery
+                p Your device will now reboot and install the operating system. Enjoy exploring Ubuntu Touch!
+                p If you want to help make Ubuntu Touch better, we would love to #[a(href="https://ubports.com/get-involved", target="_blank") welcome you on our team of volunteers]. Many different skills are needed, and wokring in a friendly open-source community can be a fun and engaging hobby. If you want, you can also #[a(href="https://ubports.com/donate", target="_blank") support us financially] to help cover the costs of developing Ubuntu Touch.
+                h5.text-center Thank you for being a part of this awesome journey!
