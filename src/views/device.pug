@@ -24,7 +24,7 @@ block content
       .col.col-md-4
         .text-center
           img.sidebar-img(src=data.image)
-        #video(hidden='hidden')
+        if data.video
           .card(style="margin-bottom: 20px")
             include device/video
         .card(style="margin-bottom: 20px")
@@ -33,5 +33,6 @@ block content
           include device/git
         .card(style="margin-bottom: 20px")
           include device/buy
-        .card(style="margin-bottom: 20px")
-          include device/join
+        if !data.video
+          .card(style="margin-bottom: 20px")
+            include device/join
