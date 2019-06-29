@@ -10,13 +10,13 @@
             h5.text-center What kind of a PC do you use?
             p You will need a PC running Linux, Windows or macOS to install Ubuntu Touch on your phone. Please select your operating system to continue.
             .text-center
-              a.button.btn.btn-primary(href="#", onclick="hostOsSelected.hidden=false; windowsInstructions.hidden=false; macInstructions.hidden=true; linuxInstructions.hidden=true")
+              a.button.btn.btn-primary(href="#", onclick="hostOsSelected.hidden=false; windowsInstructions.hidden=false; macInstructions.hidden=true; linuxInstructions.hidden=true; genericWget.hidden=true; windowsWget.hidden=false")
                 | Windows
                 span.fab.fa-windows.fab-space
-              a.button.btn.btn-primary(href="#", style="margin-left: 15px; margin-right: 15px", onclick="hostOsSelected.hidden=false; windowsInstructions.hidden=true; macInstructions.hidden=false; linuxInstructions.hidden=true")
+              a.button.btn.btn-primary(href="#", style="margin-left: 15px; margin-right: 15px", onclick="hostOsSelected.hidden=false; windowsInstructions.hidden=true; macInstructions.hidden=false; linuxInstructions.hidden=true; genericWget.hidden=false; windowsWget.hidden=true")
                 | macOS
                 span.fab.fa-apple.fab-space
-              a.button.btn.btn-primary(href="#", onclick="hostOsSelected.hidden=false; windowsInstructions.hidden=true; macInstructions.hidden=true; linuxInstructions.hidden=false")
+              a.button.btn.btn-primary(href="#", onclick="hostOsSelected.hidden=false; windowsInstructions.hidden=true; macInstructions.hidden=true; linuxInstructions.hidden=false; genericWget.hidden=false; windowsWget.hidden=true")
                 | Linux
                 span.fab.fa-linux.fab-space
             #hostOsSelected(hidden='true', style="margin-top: 15px")
@@ -32,6 +32,7 @@
                 h5.text-center You are running Windows.
                 p You will need to install #[a(href="https://adb.clockworkmod.com/", target="_blank") the universal adb driver] and set up #[a(href="https://www.stechguide.com/how-to-install-adb-and-fastboot-on-windows/", target="_blank") adb and fastboot].
                 p Create a new temporary folder for the installation and navigate your console there.
+                p Download #[a(href="https://eternallybored.org/misc/wget/", target="_blank") wget] (a utility to download files from the command-line) and #[a(href="http://www.labtestproject.com/files/win/sha256sum/sha256sum.exe", target="_blank") sha256sum] (a command-line utility to confirm the integrity of downloaded files) into that directory.
               #macInstructions(hidden='true')
                 h5.text-center You are running macOS.
                 p Install #[a(href="https://www.stechguide.com/setup-adb-and-fastboot-on-mac-easy-step-by-step-guide/", target="_blank") adb and fastboot].
@@ -41,15 +42,26 @@
                   | cd /tmp/ubuntutouchinstall
               h5.text-center Download Ubuntu Touch
               p Run these commands to download all the Ubuntu Touch installation files and check their integrity.
-              pre
-                each image in data.install.images
-                  | wget #{image.url} -O #{image.type}.img && echo "#{image.checksum} #{image.type}.img" | sha256sum -c
+              #genericWget(hidden='true')
+                pre
+                  each image in data.install.images
+                    | wget #{image.url} -O #{image.type}.img && echo "#{image.checksum} #{image.type}.img" | sha256sum -c
+                    br
+                  | mkdir pool gpg
                   br
-                | mkdir pool gpg
-                br
-                each url in install.urls
-                  | wget #{url.url} -O #{url.path + "/" + url.url.split(/[\/]/).pop()} #{url.checksum ? "&& echo \"" + url.checksum + " " + url.path + "/" + url.url.split(/[\/]/).pop() + "\" | sha256sum -c" : "&& echo OK"}
+                  each url in install.urls
+                    | wget #{url.url} -O #{url.path + "/" + url.url.split(/[\/]/).pop()} #{url.checksum ? "&& echo \"" + url.checksum + " " + url.path + "/" + url.url.split(/[\/]/).pop() + "\" | sha256sum -c" : "&& echo OK"}
+                    br
+              #windowsWget(hidden='true')
+                pre
+                  each image in data.install.images
+                    | wget #{image.url} -O #{image.type}.img && (echo #{image.checksum} *#{image.type}.img && echo.) | sha256sum -c
+                    br
+                  | mkdir pool gpg
                   br
+                  each url in install.urls
+                    | wget #{url.url} -O #{url.path + "/" + url.url.split(/[\/]/).pop()} #{url.checksum ? "&& (echo \"" + url.checksum + " *" + url.path + "/" + url.url.split(/[\/]/).pop() + "\" && echo.) | sha256sum -c" : "&& echo OK"}
+                    br
               p If all files downoaded successfully and the checks read "OK", you can continue with the installation.
               h5.text-center Enable developer mode
               p Your device needs to be in developer mode to continue with the installation. What operating system is the device running right now?
@@ -65,7 +77,8 @@
                 li Scroll down to the bottom again, where you see "Build number."
                 li Tap it seven (7) times. After the third tap, you'll see a dialog that says you're four taps away from being a developer. Keep on tapping until you see a dialog saying "You're now a developer"
                 li Now go back to the Settings menu and find "developer settings" (sometimes called "developer options"), Tap that.
-                li Enable the "OEM unlock" and "USB debugging" options.
+                li Enable the "USB debugging" option.
+                li Enable the "OEM unlock" option, if it's there. If not, that is not a problem.
               #unlockingUbuntuTouch.ol(hidden='true', style="margin-top: 15px")
                 li Open System Settings, go to About this Phone, and then Developer Mode.
                 li The adb service will be enabled if 'developer mode' is selected. Note that you must have some sort of lock screen security enabled (pin or password), and 'Developer mode' will be greyed out if that's not the case.
@@ -79,22 +92,23 @@
                   | 0123456789ABCDEF	device
                 p If your device does not show up, disconnect your device and plug it back in again, or run the following command and try again:
                 pre adb kill-server
+                p If your device shows up as unauthorized, confirm the authorization dialog on the device and try again.
                 h5.text-center Unlock the bootloader
                 p First, you need to reboot your device to bootloader mode. #{data.install.buttons.bootloader.instruction} Now, connect your phone to your computer and run the following commands to wipe the internal memory.
                 pre
-                  | sudo fastboot oem unlock
-                  | sudo fastboot format cache
-                  | sudo fastboot reboot-bootloader
+                  | fastboot oem unlock
+                  | fastboot format cache
+                  | fastboot reboot-bootloader
                 p If you want to erase the data on the device, run these commands:
                 pre
-                  | sudo fastboot format userdata
-                  | sudo fastboot format system
+                  | fastboot format userdata
+                  | fastboot format system
                 h5.text-center Installation
                 pre
                   each image in data.install.images
-                    | sudo fastboot flash #{image.type} #{image.type}.img
+                    | fastboot flash #{image.type} #{image.type}.img
                     br
-                p Now reboot the device to recovery mode. #{data.install.buttons.recovery.instruction} Create a new text file called "commandfile" with the following content:
+                p Now reboot the device to recovery mode. #{data.install.buttons.recovery.instruction} Create a new text file with LF line-feeds called "commandfile" with the following content:
                 pre #{install.commands}
                 p We will now send all the installation files to the device.
                 pre
