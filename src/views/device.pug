@@ -1,8 +1,11 @@
 extends components/layout
 
 block content
+  include components/donate-modal
   include components/bitcoin-modal
   include components/installer-modal
+  script.
+    setTimeout(() => {$('#donateModal').modal('show');}, 10000);
   if data.install.installable
     include components/manual-installation-modal
   .container
